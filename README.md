@@ -1,6 +1,15 @@
 # Leitstellenspiel FMS 5 Home Assistant Light Control
 
+[![Build Executable](https://github.com/TheScriptList/lss_fms5_alert_homeassistant/actions/workflows/build-exe.yml/badge.svg)](https://github.com/TheScriptList/lss_fms5_alert_homeassistant/actions/workflows/build-exe.yml)
+[![Docker Image CI](https://github.com/TheScriptList/lss_fms5_alert_homeassistant/actions/workflows/build-docker.yml/badge.svg)](https://github.com/TheScriptList/lss_fms5_alert_homeassistant/actions/workflows/build-docker.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/TheScriptList/lss_fms5_alert_homeassistant?label=Latest%20Release)](https://github.com/TheScriptList/lss_fms5_alert_homeassistant/releases/latest)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/TheScriptList/lss_fms5_alert_homeassistant/total?label=Total%20Downloads)](https://github.com/TheScriptList/lss_fms5_alert_homeassistant/releases)
+
+
 Dieses Skript überwacht Fahrzeuge mit Status FMS 5 im Leitstellenspiel und steuert eine Lampe über Home Assistant entsprechend dem Status.
+
+> [!IMPORTANT]
+> Die Anleitung sowie das Script sind noch WIP und nicht Final!
 
 ## Inhaltsverzeichnis
 
