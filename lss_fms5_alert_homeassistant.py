@@ -7,6 +7,7 @@ import requests
 import os
 import logging
 from time import sleep
+from urllib.parse import urlparse
 from http.cookiejar import MozillaCookieJar
 from homeassistant_api import Client
 from dotenv import load_dotenv, set_key
@@ -52,7 +53,7 @@ def load_cookies(file_path):
 
 def get_all_lights(client):
     entitie_groups = client.get_entities()
-    light_group = entitie_groups.get('light', {})
+    light_group = entitie_groups.get("light", {})
     return light_group.entities
 
 def fetch_fms5_count():
@@ -76,10 +77,13 @@ if __name__ == "__main__":
         format="%(asctime)s %(name)-8s %(levelname)-8s %(message)s")
     log.info("v" + str(__version__))
 
-    HASS_URL = get_setting("HASS_API_URL", message="Bitte die Home Assistant API URL eingeben")
-    HASS_TOKEN = get_setting("HASS_API_TOKEN", message="Bitte den Home Assistant API-Token eingeben")
+    HASS_URL = urlparse(get_setting("HASS_API_URL", message="Bitte die Home Assistant API URL eingeben"))
+    HASS_URL = HASS_URL._replace(path="/api").geturl() # /api Pfad hinzufügen, falls fehlend
+    HASS_TOKEN = str(get_setting("HASS_API_TOKEN", message="Bitte den Home Assistant API-Token eingeben"))
     CHECK_INTERVAL = int(get_setting("CHECK_INTERVAL", message="Bitte das Prüfintervall in Sekunden eingeben", default=10))
     LIGHT_BRIGHTNESS = int(get_setting("LIGHT_BRIGHTNESS", message="Helligkeit der Lampe [0-255]", default=50))
+    LIGHT_COLOR = str(get_setting("LIGHT_COLOR", message="Farbe der Lampe in RGB [0-255,0-255,0-255]", default="255,0,0"))
+    LIGHT_COLOR = LIGHT_COLOR.split(",")
     COOKIES = load_cookies(COOKIE_FILE)
 
     # HASS Client einrichten
@@ -97,7 +101,7 @@ if __name__ == "__main__":
             fms5_count = fetch_fms5_count()
             log.info(f"Aktuelle FMS5 Anzahl: {fms5_count}")
             if fms5_count > 0:
-                light.turn_on(entity_id, brightness=LIGHT_BRIGHTNESS, rgb_color=[255, 0, 0])
+                light.turn_on(entity_id, brightness=LIGHT_BRIGHTNESS, rgb_color=LIGHT_COLOR)
                 if fms5_count > last_fms5_count and last_fms5_count > 0:
                     sleep(0.5)
                     light.turn_on(entity_id, flash="short")
@@ -106,7 +110,7 @@ if __name__ == "__main__":
                     # Temp Scene zum wiederherstellen aktualisieren, falls keine FMS5
                     scene.create(scene_id=HASS_TEMP_SCENE, snapshot_entities=entity_id)
                 else:
-                    scene.turn_on(entity_id=f'scene.{HASS_TEMP_SCENE}')
+                    scene.turn_on(entity_id=f"scene.{HASS_TEMP_SCENE}")
             
             last_fms5_count = fms5_count
             
@@ -115,5 +119,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         # Restore the light to its original state and cleanup
         log.info("KeyboardInterrupt festgestellt, stelle Ursprungszustand wieder her...")
-        scene.turn_on(entity_id=f'scene.{HASS_TEMP_SCENE}')
-        scene.delete(entity_id=f'scene.{HASS_TEMP_SCENE}')
+        scene.turn_on(entity_id=f"scene.{HASS_TEMP_SCENE}")
+        scene.delete(entity_id=f"scene.{HASS_TEMP_SCENE}")
