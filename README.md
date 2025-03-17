@@ -9,7 +9,7 @@
 Dieses Skript überwacht Fahrzeuge mit Status FMS 5 im Leitstellenspiel und steuert eine Lampe über Home Assistant entsprechend dem Status.
 
 > [!IMPORTANT]
-> Die Anleitung sowie das Script sind noch WIP und nicht Final!
+> # Die Anleitung sowie das Script sind noch WIP und nicht Final!
 
 ## Inhaltsverzeichnis
 
