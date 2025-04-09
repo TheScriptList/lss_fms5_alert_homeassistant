@@ -198,5 +198,4 @@ pyrightconfig.json
 cookies.txt
 config.ini
 .env
-pyproject.toml
 uv.lock

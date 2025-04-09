@@ -1,0 +1,12 @@
+[project]
+name = "lss-fms5-alert-homeassistant"
+version = "1.0.0"
+description = "Überwacht Fahrzeuge mit Status FMS 5 im Leitstellenspiel und steuert eine Lampe über Home Assistant entsprechend dem Status."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "homeassistant-api~=5.0.0",
+    "inquirer~=3.4.0",
+    "python-dotenv~=1.0.1",
+    "requests~=2.32.3",
+]
