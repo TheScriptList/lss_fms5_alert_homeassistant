@@ -51,5 +51,4 @@ jobs:
         with:
           draft: true
           generate_release_notes: true
-          body_path: CHANGELOG.md
           files: dist/*
