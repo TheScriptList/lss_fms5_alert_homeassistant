@@ -53,7 +53,7 @@ jobs:
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
 
       - name: Build Executable
-        run: pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n $BUILD_NAME ${{ env.PROJECT_NAME }}.py
+        run: pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n "$BUILD_NAME" ${{ env.PROJECT_NAME }}.py
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
