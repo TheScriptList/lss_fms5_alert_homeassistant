@@ -42,22 +42,22 @@ jobs:
         run: pip install -r requirements.txt -r requirements-build.txt
 
       - name: Define Build Name
-        shell: bash
+        shell: python
         run: |
-          project_name="${{ env.PROJECT_NAME }}"
-          ref_name="${{ github.ref_name }}"
-          ref_type="${{ github.ref_type }}"
-          sha="$(echo "${{ github.sha }}" | cut -c1-7)"
-          os="$(echo "${{ runner.os }}" | tr '[:upper:]' '[:lower:]')"
-          arch="$(echo "${{ runner.arch }}" | tr '[:upper:]' '[:lower:]')"
+          from os import getenv
 
-          sha_suffix=""
-          if [ "$ref_type" != "tag" ]; then
-            sha_suffix="-$sha"
-          fi
+          project_name = getenv("PROJECT_NAME")
+          ref_name = getenv("GITHUB_REF_NAME")
+          ref_type = getenv("GITHUB_REF_TYPE")
+          sha = getenv("GITHUB_SHA")[:7]
+          os_name = getenv("RUNNER_OS").lower()
+          arch = getenv("RUNNER_ARCH").lower()
 
-          BUILD_NAME="${project_name}-${ref_name}${sha_suffix}_${os}_${arch}"
-          echo "BUILD_NAME=$BUILD_NAME" >> "$GITHUB_ENV"
+          sha_suffix = f"-{sha}" if ref_type != "tag" else ""
+          build_name = f"{project_name}-{ref_name}{sha_suffix}_{os_name}_{arch}"
+
+          with open(getenv("GITHUB_ENV"), "a") as env_file:
+            env_file.write(f"BUILD_NAME={build_name}\n")
 
       - name: Build Executable
         run: |
