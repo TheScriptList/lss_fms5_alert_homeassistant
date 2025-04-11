@@ -13,6 +13,9 @@ permissions:
   contents: write
   actions: write
 
+env:
+  PROJECT_NAME: lss_fms5_alert_homeassistant
+
 jobs:
   build:
     strategy:
@@ -38,8 +41,19 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt -r requirements-build.txt
 
+      - name: Define Build Name
+        shell: bash
+        run: |
+          sha_suffix=""
+          if [ "${{ github.ref_type }}" != "tag" ]; then
+            sha_suffix="@${{ github.sha }}"
+          fi
+
+          BUILD_NAME="${{ env.PROJECT_NAME }}-${{ github.ref_name }}$sha_suffix_${{ runner.os }}_${{ runner.arch }}"
+          echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
+
       - name: Build Executable
-        run: pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n lss_fms5_alert_homeassistant-${{ github.ref_name }}_${{ runner.os }}_${{ runner.arch }} lss_fms5_alert_homeassistant.py
+        run: pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n $BUILD_NAME ${{ env.PROJECT_NAME }}.py
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
