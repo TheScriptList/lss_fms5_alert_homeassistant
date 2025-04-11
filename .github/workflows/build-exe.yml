@@ -57,7 +57,7 @@ jobs:
           fi
 
           BUILD_NAME="${project_name}-${ref_name}${sha_suffix}_${os}_${arch}"
-          echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
+          echo "BUILD_NAME=$BUILD_NAME" >> "$GITHUB_ENV"
 
       - name: Build Executable
         run: |
