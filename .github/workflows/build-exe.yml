@@ -46,14 +46,14 @@ jobs:
         run: |
           sha_suffix=""
           if [ "${{ github.ref_type }}" != "tag" ]; then
-            sha_suffix="@${{ github.sha }}"
+            sha_suffix="-${${{ github.sha }}:0:7}"
           fi
 
           BUILD_NAME="${{ env.PROJECT_NAME }}-${{ github.ref_name }}$sha_suffix_${{ runner.os }}_${{ runner.arch }}"
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
 
       - name: Build Executable
-        run: pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n "$BUILD_NAME" ${{ env.PROJECT_NAME }}.py
+        run: pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n $BUILD_NAME ${{ env.PROJECT_NAME }}.py
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
