@@ -15,6 +15,7 @@ permissions:
 
 env:
   PROJECT_NAME: lss_fms5_alert_homeassistant
+  BUILD_ARGS: -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar
 
 jobs:
   build:
@@ -61,7 +62,7 @@ jobs:
 
       - name: Build Executable
         run: |
-          pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n "${{ env.BUILD_NAME }}" "${{ env.PROJECT_NAME }}.py"
+          pyinstaller ${{ env.BUILD_ARGS }} -n "${{ env.BUILD_NAME }}" "${{ env.PROJECT_NAME }}.py"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
