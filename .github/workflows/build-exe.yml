@@ -44,12 +44,19 @@ jobs:
       - name: Define Build Name
         shell: bash
         run: |
+          project_name="${{ env.PROJECT_NAME }}"
+          ref_name="${{ github.ref_name }}"
+          ref_type="${{ github.ref_type }}"
+          sha="${{ github.sha }}"
+          os="${{ runner.os }}"
+          arch="${{ runner.arch }}"
+
           sha_suffix=""
-          if [ "${{ github.ref_type }}" != "tag" ]; then
-            sha_suffix="-$(echo ${{ github.sha }} | cut -c1-7)"
+          if [ "$ref_type" != "tag" ]; then
+            sha_suffix="-${sha:0:7}"
           fi
 
-          BUILD_NAME="${{ env.PROJECT_NAME }}-${{ github.ref_name }}$sha_suffix_${{ runner.os }}_${{ runner.arch }}"
+          BUILD_NAME="$project_name-$ref_name$sha_suffix_${os,,}_${arch,,}"
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
 
       - name: Build Executable
