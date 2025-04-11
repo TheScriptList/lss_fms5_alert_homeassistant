@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Executable
         run: |
-          pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n "$BUILD_NAME" "${{ env.PROJECT_NAME }}.py"
+          pyinstaller -F --hidden-import inquirer --hidden-import readchar --copy-metadata readchar -n "${{ env.BUILD_NAME }}" "${{ env.PROJECT_NAME }}.py"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
