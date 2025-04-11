@@ -56,7 +56,7 @@ jobs:
             sha_suffix="-${sha:0:7}"
           fi
 
-          BUILD_NAME="$project_name-$ref_name$sha_suffix_${os,,}_${arch,,}"
+          BUILD_NAME="$project_name-$ref_name${sha_suffix}_${os,,}_${arch,,}"
           echo "BUILD_NAME=$BUILD_NAME" >> $GITHUB_ENV
 
       - name: Build Executable
